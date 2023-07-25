@@ -1,8 +1,14 @@
-# Welcome to your CDK TypeScript project
+# Repro for Powertools for AWS issue #1626
 
-This is a blank project for CDK development with TypeScript.
+## Run the sample
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+Clone the repo and run `npm ci` to install the dependencies.
+
+Then run `npx cdk deploy` to deploy the stack.
+
+Finally invoke the three functions and check the logs.
+
+![image](./assets/logs.png)
 
 ## Useful commands
 

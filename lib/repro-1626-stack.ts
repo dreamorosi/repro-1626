@@ -1,16 +1,33 @@
-import * as cdk from 'aws-cdk-lib';
-import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+import { Stack, Duration } from "aws-cdk-lib";
+import type { StackProps } from "aws-cdk-lib";
+import { Construct } from "constructs";
+import { Runtime } from "aws-cdk-lib/aws-lambda";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import { RetentionDays } from "aws-cdk-lib/aws-logs";
 
-export class Repro1626Stack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+export class Repro1626Stack extends Stack {
+  constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
+    new NodejsFunction(this, "setAtRuntime", {
+      runtime: Runtime.NODEJS_18_X,
+      entry: "lib/setAtRuntime.ts",
+      logRetention: RetentionDays.ONE_DAY,
+    });
 
-    // example resource
-    // const queue = new sqs.Queue(this, 'Repro1626Queue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    new NodejsFunction(this, "setWithConstructor", {
+      runtime: Runtime.NODEJS_18_X,
+      entry: "lib/setWithConstructor.ts",
+      logRetention: RetentionDays.ONE_DAY,
+    });
+
+    new NodejsFunction(this, "setWithEnv", {
+      runtime: Runtime.NODEJS_18_X,
+      entry: "lib/setWithEnv.ts",
+      logRetention: RetentionDays.ONE_DAY,
+      environment: {
+        LOG_LEVEL: "WARN",
+      },
+    });
   }
 }
